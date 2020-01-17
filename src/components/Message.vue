@@ -1,11 +1,18 @@
 <template>
     <div>
-        <div v-for="msg in messages">
+        <div v-for="(msg, index) in messages">
             <div v-if="msg.Uid == user.uid">
                 <div class="msg-username"> {{msg.Username}}</div>
-              <div class="chat-container" ref="chatContainer" >
-                  <div class="speech-bubble" v-bind:style="{ background: msg.Color }"> {{msg.Message}}</div>
-              </div>
+                <div v-if="checkImage(msg)">
+                    <div class="chat-container" ref="chatContainer">
+                        <div class="speech-bubble" v-bind:style="{background: '#808080'}"> <img class="img" :src="checkImage[0]"/></div>
+                    </div>
+                </div>
+                <div v-else>
+                    <div class="chat-container" ref="chatContainer" >
+                      <div class="speech-bubble" v-bind:style="{ background: msg.Color }"> {{msg.Message}}</div>
+                    </div>
+                </div>
             </div>
             <div v-else>
                 <div class="msg-username-1"> {{msg.Username}}</div>
@@ -18,12 +25,48 @@
 </template>
 
 <script>
+    import firebase from 'firebase'
+
     export default {
         name: "Message",
+        data() {
+            return {
+                sources: [],
+                idx: 0
+            }
+        },
         props: [
             'messages',
             'user'
-        ]
+        ],
+
+        computed: {
+
+        },
+
+        created() {
+            let context = this
+            for (let idx in this.messages) {
+                let msg = this.messages[idx]
+                console.log('Looping')
+                if (msg.isImage) {
+                    firebase.storage().ref(msg.imagePath).getDownloadURL().then(function (url) {
+                        context.sources.push(url)
+                    })
+                }
+            }
+        },
+        methods: {
+            checkImage(msg) {
+                if (msg.isImage) {
+                    this.idx +=1
+                    return true
+                }
+                else {
+                    return false
+                }
+            }
+        }
     }
 </script>
 

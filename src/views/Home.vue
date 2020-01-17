@@ -5,8 +5,10 @@
                 <message :messages="messages" :user="user"/>
             </div>
             <div style="display: flex; margin: 10px 0 10px 0;">
+                <v-btn icon @click="launchFilePicker" style="height: 62px;"> <v-icon>mdi-camera</v-icon></v-btn>
+                <input type="file" ref="imagePicker" accept="image/*" style="display: none" @change="onFileChange($event.target.name, $event.target.files)"/>
                 <b-form-textarea type="text" class="msgInput" v-model="userMsg" placeholder="Enter your message" rows="0" max-rows="6" no-resize v-on:keyup.enter="sendMessage"/>
-                <v-btn icon @click="sendMessage" style="height: 62px;"> <v-icon> send </v-icon> </v-btn>
+                <v-btn icon @click="sendMessage" style="height: 62px;"> <v-icon> mdi-send </v-icon> </v-btn>
             </div>
         </div>
         <b-modal ref="firstLoginModal" title="Just a little more information from you!" no-close-on-backdrop no-close-on-esc cancel-disabled centered @ok="handleOk">
@@ -23,6 +25,7 @@
     import firebase from 'firebase'
     import store from '../store'
     import Message from '../components/Message'
+    import Swal from 'sweetalert2'
 
     let db = firebase.firestore()
 
@@ -37,7 +40,7 @@
                 justify: 'end',
                 messages: [],
                 user: firebase.auth().currentUser,
-                userMsg: null,
+                userMsg: '',
                 offsetHeight: 0,
                 navbarHeight: 0,
                 innerHeight: 0,
@@ -45,7 +48,9 @@
                 scrollHeight: 0,
                 clientHeight: 0,
                 groupId: 'D2LPkAyE8ZEVLl7AYqPg',
-                color: '#00aabb'
+                color: '#00aabb',
+                value: null,
+                image: null
             }
         },
         computed: {
@@ -82,7 +87,6 @@
                 context.messages = msgs.sort(function(a,b) {
                     return a.Time - b.Time
                 })
-
             })
         },
 
@@ -121,20 +125,51 @@
 
         methods: {
 
+            launchFilePicker() {
+                this.$refs.imagePicker.click()
+            },
+
+            onFileChange(fieldName, file) {
+                let imageFile = file[0]
+
+                if(file.length > 0) {
+                    this.image = imageFile
+                }
+            },
+
             sendMessage() {
-                if (this.userMsg.trim() != '') {
+                console.log('Trying...')
+                if (this.userMsg.trim() != '' | this.image !== null) {
+                    console.log('Sending')
                     let msg = this.userMsg
                     this.userMsg = ''
                     let context = this
+                    let isImage = this.image ? true : false
+
                     db.collection('Groups').doc(this.groupId).collection('Messages').add({
-                        Message: msg,
+                        Message: isImage ? '' : msg,
                         Uid: context.user.uid,
                         Time: Date.now(),
                         Username: context.username,
-                        Color: store.state.color
+                        Color: store.state.color,
+                        isImage: isImage,
+                        imagePath: isImage ? 'Images/' + context.image.name : ''
                     }).then(function () {
                         let incr = firebase.firestore.FieldValue.increment(1)
                         db.collection('Groups').doc(context.groupId).update({msgCount: incr})
+                        if (isImage) {
+                            firebase.storage().ref().child('Images/'+ context.image.name).put(context.image).then(function(snap) {
+                                const Toast = Swal.mixin({
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                    });
+                                    Toast.fire({
+                                        type: 'success',
+                                        title: 'Successfully uploaded image!'
+                                });
+                            })
+                            context.image = null
+                        }
                     })
 
                 } else {

@@ -106,12 +106,12 @@
 						});
 
                         const Toast = Swal.mixin({
-                        showConfirmButton: false,
-                        timer: 2000
-                    	});
-						Toast.fire({
-							type: 'success',
-							title: 'Successfully logged in!'
+							showConfirmButton: false,
+							timer: 2000
+							});
+							Toast.fire({
+								type: 'success',
+								title: 'Successfully logged in!'
 						});
 						store.commit('login', firebase.auth().currentUser)
                         router.push("/");

@@ -14,7 +14,7 @@ import firebase from 'firebase'
 
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import 'vuesax/dist/vuesax.css'
-import 'material-icons/iconfont/material-icons.css'
+import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/dist/vuetify.css'
 
 Vue.config.productionTip = false
