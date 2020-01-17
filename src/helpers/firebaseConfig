@@ -1,0 +1,10 @@
+export const config = {
+  apiKey: "AIzaSyApVBUZBh0ssimgtsxMEG_z7ffKgFpQzuI",
+  authDomain: "utopia-3ef96.firebaseapp.com",
+  databaseURL: "https://utopia-3ef96.firebaseio.com",
+  projectId: "utopia-3ef96",
+  storageBucket: "utopia-3ef96.appspot.com",
+  messagingSenderId: "319414658629",
+  appId: "1:319414658629:web:1f8d7a80355dcf1e46a52c",
+  measurementId: "G-3MQWY1767N"
+};
