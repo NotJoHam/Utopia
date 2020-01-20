@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: null,
-    color: '#00aabb'
+    color: '#00aabb',
+    srcIdx: 0
   },
   mutations: {
     login (state, user) {
@@ -17,6 +18,9 @@ export default new Vuex.Store({
     },
     setColor(state, color) {
       state.color = color
+    },
+    updateIdx(state) {
+      state.srcIdx += 1
     }
 
   },

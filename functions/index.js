@@ -12,6 +12,9 @@ exports.deleteOldestMessage = functions.firestore.document('Groups/{groupId}/Mes
             db.collection('Groups').doc(context.params.groupId).collection('Messages').orderBy('Time').limit(count - 45).get().then(function(snapshot) {
 
                 snapshot.forEach(function(document) {
+                    if (document.isImage) {
+                        admin.storage().bucket('gs://utopia-3ef96.appspot.com/').file(document.imagePath).delete()
+                    }
                     db.collection('Groups').doc(context.params.groupId).collection('Messages').doc(document.id).delete()
                 })
 

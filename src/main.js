@@ -11,6 +11,7 @@ import {required, email} from 'vee-validate/dist/rules'
 import Vuesax from 'vuesax'
 import Vuetify from 'vuetify'
 import firebase from 'firebase'
+import EXIF from "exif-js/exif";
 
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import 'vuesax/dist/vuesax.css'

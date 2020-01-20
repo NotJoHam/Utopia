@@ -90,7 +90,6 @@
 
                 firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
                     function () {
-                    	let context = this
                     	//Get a proper Firebase timestamp
                     	let ts = firebase.firestore.FieldValue.serverTimestamp()
 						//Get the user's IP address to store in the database
@@ -105,16 +104,8 @@
 							BubbleColor: '#00aabb'
 						});
 
-                        const Toast = Swal.mixin({
-							showConfirmButton: false,
-							timer: 2000
-							});
-							Toast.fire({
-								type: 'success',
-								title: 'Successfully logged in!'
-						});
 						store.commit('login', firebase.auth().currentUser)
-                        router.push("/");
+                        router.push({name: 'Home', params: {FirstLogin: true}});
                     },
                     function (err) {
                     	context.btnClicked = false
@@ -143,7 +134,17 @@
 								IP: context.ip
 							})
 							store.commit('login', firebase.auth().currentUser)
-							router.push("/");
+
+							const Toast = Swal.mixin({
+								showConfirmButton: false,
+								timer: 1500
+							});
+							Toast.fire({
+								type: 'success',
+								title: 'Successfully logged in!'
+							});
+
+							router.push({name: 'Home', params: {FirstLogin: false}});
 						},
 						function (err) {
 							context.btnClicked = false
