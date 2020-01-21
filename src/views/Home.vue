@@ -133,8 +133,8 @@
                 context.offsetHeight =  txtarea ? txtarea.offsetHeight : 0
                 let ldiv = document.getElementsByClassName('msgContainer')[0]
 
-                if (context.scrollTop + context.clientHeight == context.scrollHeight) {
-                    ldiv.scrollTop = ldiv.scrollHeight
+                if (context.scrollHeight - context.clientHeight <= context.scrollTop + 1) {
+                    ldiv.scrollTop = ldiv.scrollHeight - ldiv.clientHeight
                 }
             })
         },
@@ -275,7 +275,7 @@
     }
 
     .msgContainer {
-        height: 90%;
+        height: 100%;
         overflow-y: scroll;
     }
 
