@@ -10,12 +10,12 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'home',
     component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue')
   },
   {
     path: '/welcome',
-    name: 'Welcome',
+    name: 'welcome',
     component: Welcome
   },
   {
@@ -31,6 +31,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => import('../views/Profile.vue')
   },
     {
     path: '/passwordReset',

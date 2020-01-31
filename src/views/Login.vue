@@ -105,7 +105,7 @@
 						});
 
 						store.commit('login', firebase.auth().currentUser)
-                        router.push({name: 'Home', params: {FirstLogin: true}});
+                        router.push({name: 'home', params: {FirstLogin: true}});
                     },
                     function (err) {
                     	context.btnClicked = false
@@ -144,7 +144,7 @@
 								title: 'Successfully logged in!'
 							});
 
-							router.push({name: 'Home', params: {FirstLogin: false}});
+							router.push({name: 'home', params: {FirstLogin: false}});
 						},
 						function (err) {
 							context.btnClicked = false

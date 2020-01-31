@@ -13,7 +13,7 @@
             <b-navbar-nav class="ml-auto" v-if="this.user">
                 <b-nav-item right>
                     <b-dropdown text="My profile" variant="dark" type="dark" right>
-                        <b-dropdown-item>View profile</b-dropdown-item>
+                        <b-dropdown-item to="/profile">View profile</b-dropdown-item>
                         <b-dropdown-item @click="showmodal">Settings</b-dropdown-item>
                         <b-dropdown-item>Help & feedback</b-dropdown-item>
                         <b-dropdown-item @click="logout">Logout</b-dropdown-item>
