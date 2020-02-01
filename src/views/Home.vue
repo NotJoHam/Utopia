@@ -1,14 +1,15 @@
 <template>
     <div>
         <div class="homeContainer" :style="{ 'height': `calc(96 * ${innerHeight}px - ${navbarHeight}px`}">
-            <div id="msgContainer" class="msgContainer" :style="{ 'max-height': `calc(100% - ${offsetHeight}px`}">
+            <div id="msgContainer" class="msgContainer" :style="{ 'max-height': `calc(100% - ${offsetHeight}px`}" >
                 <message :messages="messages" :user="user" :sources="sources"/>
             </div>
+
             <div style="display: flex; margin: 10px 0 10px 0;">
                 <v-btn icon @click="launchFilePicker" style="height: 62px;"> <v-icon>mdi-camera</v-icon></v-btn>
                 <input class="file-picker" type="file" ref="imagePicker" accept="image/*" style="display: none" @change="onFileChange($event.target.name, $event.target.files)"/>
                 <b-form-textarea type="text" class="msgInput" v-model="userMsg" placeholder="Enter your message" rows="0" max-rows="6"
-                                 no-resize v-on:keyup.enter="sendMessage"/>
+                                 no-resize v-on:keydown.enter.prevent="sendMessage"/>
                 <v-btn icon @click="sendMessage" style="height: 62px;"> <v-icon> mdi-send </v-icon> </v-btn>
             </div>
         </div>
@@ -78,6 +79,7 @@
 
         created() {
             let context = this
+
             this.user = firebase.auth().currentUser
             db.collection('Users').doc(this.user.uid).get().then(function(doc) {
                 if (doc.exists) {

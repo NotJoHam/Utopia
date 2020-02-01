@@ -12,6 +12,7 @@ import Vuesax from 'vuesax'
 import Vuetify from 'vuetify'
 import firebase from 'firebase'
 import EXIF from "exif-js/exif";
+import VueProgressiveImage from 'vue-progressive-image'
 
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import 'vuesax/dist/vuesax.css'
@@ -22,6 +23,7 @@ Vue.config.productionTip = false
 Vue.use(bootstrapVue)
 Vue.use(Vuesax)
 Vue.use(Vuetify)
+Vue.use(VueProgressiveImage)
 
 Vue.component('validation-provider', ValidationProvider)
 Vue.component('validation-observer', ValidationObserver)

@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@jeremyhamm/vue-slider": "^0.2.0",
+    "@kevindesousa/vue-image-loader": "^2.0.1",
     "ajax": "0.0.4",
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.2.2",
@@ -25,6 +26,7 @@
     "vue": "^2.6.11",
     "vue-burger-menu": "^2.0.3",
     "vue-colorpicker": "^1.0.1",
+    "vue-progressive-image": "^3.2.0",
     "vue-router": "^3.1.5",
     "vue-sidebar-menu": "^4.4.7",
     "vuelidate": "^0.7.5",

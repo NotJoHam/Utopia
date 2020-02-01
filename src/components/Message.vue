@@ -5,7 +5,10 @@
                 <div class="msg-username"> {{msg.Username}}</div>
                 <div v-if="msg.isImage">
                     <div class="chat-container" ref="chatContainer">
-                        <div class="speech-bubble" v-bind:style="{background: msg.Color}"> <b-img  fluid class="img" :src="msg.url"/></div>
+                        <div class="speech-bubble chatImage" v-bind:style="{background: msg.Color}">
+                            <progressive-img fluid class="img" :src="msg.url" @onLoad="loaded"/>
+<!--                            <v-progress-circular class="cloakSpinner" indeterminate color="primary"/>-->
+                        </div>
                     </div>
                 </div>
                 <div v-else>
@@ -18,7 +21,10 @@
                 <div class="msg-username-1"> {{msg.Username}}</div>
                 <div v-if="msg.isImage">
                     <div class="chat-container-1" ref="chatContainer">
-                        <div class="speech-bubble-1" v-bind:style="{background: msg.Color}"> <b-img  fluid class="img" :src="msg.url"/></div>
+                        <div class="speech-bubble-1 chatImage" v-bind:style="{background: msg.Color}">
+                            <progressive-img fluid class="img" :src="msg.url" @onLoad="loaded"/>
+<!--                            <v-progress-circular class="cloakSpinner" indeterminate color="primary"/>-->
+                        </div>
                     </div>
                 </div>
                 <div v-else>
@@ -40,7 +46,8 @@
         name: "Message",
         data() {
             return {
-                stuff: null
+                stuff: null,
+                isLoaded: false
             }
         },
         props: [
@@ -48,13 +55,40 @@
             'user',
             'sources'
         ],
+        mounted() {
+
+        },
 
         methods: {
+            loaded(evt) {
+                let ldiv = document.getElementsByClassName('msgContainer')[0]
+                if (ldiv.scrollHeight - ldiv.clientHeight <= ldiv.scrollTop + 50) {
+                    ldiv.scrollTop = ldiv.scrollHeight
+                }
+                let elems = document.getElementsByClassName('chatImage')
+
+                for (let i = 0; i < elems.length; i++) {
+                    elems.item(i).style.height = 'auto'
+                    // elems.item(i).style.width = 'auto'
+                }
+
+            }
         }
     }
 </script>
 
 <style scoped>
+
+    .cloakSpinner {
+        margin: 0 auto;
+    }
+
+    .chatImage {
+        width: 400px;
+        height: 400px;
+        max-height: 400px;
+        max-width: 400px;
+    }
 
     .msg-username {
         display: flex;
@@ -106,6 +140,12 @@
     }
 
     @media screen and  (max-width: 600px) {
+
+        .chatImage {
+            max-height: 200px;
+            max-width: 200px;
+        }
+
 		.speech-bubble {
 			padding: 10px;
             background: #00aabb;
