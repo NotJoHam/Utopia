@@ -5,8 +5,8 @@
                 <div class="msg-username"> {{msg.Username}}</div>
                 <div v-if="msg.isImage">
                     <div class="chat-container" ref="chatContainer">
-                        <div class="speech-bubble chatImage" v-bind:style="{background: msg.Color}">
-                            <progressive-img fluid class="img" :src="msg.url" @onLoad="loaded"/>
+                        <div class="chatImage" v-bind:style="{background: msg.Color}">
+                            <v-img class="chatImage" :src="msg.url" @load="loaded" @click="launchImg(msg)"/>
 <!--                            <v-progress-circular class="cloakSpinner" indeterminate color="primary"/>-->
                         </div>
                     </div>
@@ -21,8 +21,8 @@
                 <div class="msg-username-1"> {{msg.Username}}</div>
                 <div v-if="msg.isImage">
                     <div class="chat-container-1" ref="chatContainer">
-                        <div class="speech-bubble-1 chatImage" v-bind:style="{background: msg.Color}">
-                            <progressive-img fluid class="img" :src="msg.url" @onLoad="loaded"/>
+                        <div class="chatImage" v-bind:style="{background: msg.Color}">
+                            <v-img class="chatImage" :src="msg.url" @load="loaded" @click="launchImg(msg)"/>
 <!--                            <v-progress-circular class="cloakSpinner" indeterminate color="primary"/>-->
                         </div>
                     </div>
@@ -72,6 +72,10 @@
                     // elems.item(i).style.width = 'auto'
                 }
 
+            },
+            launchImg(msg) {
+                console.log('doing this');
+                this.$emit('expandImage',msg)
             }
         }
     }
@@ -84,8 +88,6 @@
     }
 
     .chatImage {
-        width: 400px;
-        height: 400px;
         max-height: 400px;
         max-width: 400px;
     }
@@ -133,10 +135,6 @@
         margin: 0 10px 10px 10px;
         overflow-wrap: break-word;
         text-align: left;
-    }
-
-    .img {
-        max-height: 600px
     }
 
     @media screen and  (max-width: 600px) {

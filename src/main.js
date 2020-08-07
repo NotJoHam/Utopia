@@ -19,6 +19,7 @@ import 'vuesax/dist/vuesax.css'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/dist/vuetify.css'
 
+
 Vue.config.productionTip = false
 Vue.use(bootstrapVue)
 Vue.use(Vuesax)

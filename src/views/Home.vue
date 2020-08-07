@@ -2,7 +2,7 @@
     <div>
         <div class="homeContainer" :style="{ 'height': `calc(96 * ${innerHeight}px - ${navbarHeight}px`}">
             <div id="msgContainer" class="msgContainer" :style="{ 'max-height': `calc(100% - ${offsetHeight}px`}" >
-                <message :messages="messages" :user="user" :sources="sources"/>
+                <message :messages="messages" :user="user" :sources="sources" @expandImage="expandImage"/>
             </div>
 
             <div style="display: flex; margin: 10px 0 10px 0;">
@@ -24,6 +24,9 @@
         <b-modal ref="imageModal" title="Are you sure you want to use this picture?" @ok="sendMessage" @cancel="cancelImage" centered>
             <b-img class="modal-image" fluid :src="imagePreview"/>
         </b-modal>
+        <b-modal size="lg" hide-footer ref="expandImageModal" :title="expandedUsername" centered>
+            <v-img class="modal-image" size="lg" :src="expandedUrl"/>
+        </b-modal>
     </div>
 </template>
 
@@ -32,9 +35,8 @@
     import store from '../store'
     import Message from '../components/Message'
     import Swal from 'sweetalert2'
-    import EXIF from 'exif-js'
     import uuid from 'uuid/v1'
-    import getOrientedImage from 'exif-orientation-image'
+    import Compressor from 'compressorjs'
 
     let db = firebase.firestore()
 
@@ -60,7 +62,9 @@
                 value: null,
                 image: null,
                 sources: [],
-                imagePreview: ''
+                imagePreview: '',
+                expandedUsername: '',
+                expandedUrl: ''
             }
         },
         computed: {
@@ -143,6 +147,13 @@
 
         methods: {
 
+            expandImage(msg) {
+                console.log('DOne this ' + msg)
+                this.expandedUsername = msg.Username;
+                this.expandedUrl = msg.url
+                this.$refs['expandImageModal'].show()
+            },
+
             launchFilePicker() {
                 this.$refs.imagePicker.click()
             },
@@ -152,22 +163,16 @@
                 if (file.length > 0) {
                     let imageFile = file[0]
                     this.image = imageFile
-                    // EXIF.getData(imageFile, function() {
-                    //     console.log(EXIF.getAllTags(this))
-                    // })
-                    let img = document.getElementsByClassName('file-picker')[0]
-                    new Promise((resolve, reject) => {
-                        getOrientedImage(imageFile, function (err,canvas) {
-                            if (!err) {
-                                canvas.toBlob(function (blob) {
-                                    resolve(blob)
-                                }, imageFile.type, 1)
-                            }
-                        })
-                    }).then((orientedImageBlob) => {
-                        this.$refs['imageModal'].show()
-                        context.image = orientedImageBlob
-                        context.imagePreview = window.URL.createObjectURL(orientedImageBlob)
+
+                    new Compressor(this.image, {
+                        quality: 0.8,
+                        maxHeight: 600,
+                        maxWidth: 600,
+                        success(result) {
+                            context.$refs['imageModal'].show()
+                            context.image = result
+                            context.imagePreview = window.URL.createObjectURL(result)
+                      }
                     })
 
                 }
@@ -270,6 +275,11 @@
 </script>
 
 <style scoped>
+
+    .modal-image {
+        max-height: 800px;
+        max-width: 800px;
+    }
 
     .homeContainer {
         width: 90%;
