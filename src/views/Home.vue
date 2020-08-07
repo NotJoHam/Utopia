@@ -21,11 +21,11 @@
                 </b-form-group>
             </form>
         </b-modal>
-        <b-modal ref="imageModal" title="Are you sure you want to use this picture?" @ok="sendMessage" @cancel="cancelImage" centered>
-            <b-img class="modal-image" fluid :src="imagePreview"/>
+        <b-modal size="lg" ref="imageModal" title="Are you sure you want to use this picture?" @ok="sendMessage" @cancel="cancelImage" centered>
+            <v-img max-width="600" max-height="600" class="modal-image" :src="imagePreview"/>
         </b-modal>
         <b-modal size="lg" hide-footer ref="expandImageModal" :title="expandedUsername" centered>
-            <v-img class="modal-image" size="lg" :src="expandedUrl"/>
+            <v-img contain class="modal-image"  :src="expandedUrl"/>
         </b-modal>
     </div>
 </template>
@@ -162,12 +162,12 @@
                 let context = this
                 if (file.length > 0) {
                     let imageFile = file[0]
-                    this.image = imageFile
 
-                    new Compressor(this.image, {
-                        quality: 0.8,
-                        maxHeight: 600,
-                        maxWidth: 600,
+                    new Compressor(imageFile, {
+                        quality: .9,
+                        maxHeight: 1000,
+                        maxWidth: 1000,
+                        convertSize: Infinity,
                         success(result) {
                             context.$refs['imageModal'].show()
                             context.image = result
@@ -204,10 +204,6 @@
                                     isImage: true,
                                     url: url,
                                     imagePath: snap.ref.fullPath
-                                }).then(function () {
-                                    let incr = firebase.firestore.FieldValue.increment(1)
-                                    db.collection('Groups').doc(context.groupId).update({msgCount: incr})
-
                                 })
                             })
 
@@ -231,9 +227,6 @@
                             isImage: false,
                             url: '',
                             imagePath: ''
-                        }).then(function () {
-                            let incr = firebase.firestore.FieldValue.increment(1)
-                            db.collection('Groups').doc(context.groupId).update({msgCount: incr})
                         })
                     }
 
@@ -278,7 +271,8 @@
 
     .modal-image {
         max-height: 800px;
-        max-width: 800px;
+        height: 100%;
+        width: auto;
     }
 
     .homeContainer {

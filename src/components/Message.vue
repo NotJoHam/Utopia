@@ -5,8 +5,8 @@
                 <div class="msg-username"> {{msg.Username}}</div>
                 <div v-if="msg.isImage">
                     <div class="chat-container" ref="chatContainer">
-                        <div class="chatImage" v-bind:style="{background: msg.Color}">
-                            <v-img class="chatImage" :src="msg.url" @load="loaded" @click="launchImg(msg)"/>
+                        <div class="chatImage">
+                            <v-img height="200" :src="msg.url" @load="loaded" @click="launchImg(msg)"/>
 <!--                            <v-progress-circular class="cloakSpinner" indeterminate color="primary"/>-->
                         </div>
                     </div>
@@ -22,7 +22,7 @@
                 <div v-if="msg.isImage">
                     <div class="chat-container-1" ref="chatContainer">
                         <div class="chatImage" v-bind:style="{background: msg.Color}">
-                            <v-img class="chatImage" :src="msg.url" @load="loaded" @click="launchImg(msg)"/>
+                            <v-img height="200" :src="msg.url" @load="loaded" @click="launchImg(msg)"/>
 <!--                            <v-progress-circular class="cloakSpinner" indeterminate color="primary"/>-->
                         </div>
                     </div>
@@ -88,8 +88,8 @@
     }
 
     .chatImage {
-        max-height: 400px;
-        max-width: 400px;
+        max-width: 200px;
+        padding-right: 10px;
     }
 
     .msg-username {
@@ -140,8 +140,8 @@
     @media screen and  (max-width: 600px) {
 
         .chatImage {
-            max-height: 200px;
             max-width: 200px;
+            padding-right: 10px;
         }
 
 		.speech-bubble {
