@@ -2,10 +2,10 @@
     <div>
         <b-navbar class="navbar" type="dark" variant="dark">
             <b-navbar-brand to="/" v-if="!this.user">
-                <img src="../assets/logo.png"/>
+                <img class="nav-logo" src="../assets/logo-nb-white.png"/>
             </b-navbar-brand>
             <b-navbar-brand v-else>
-                <img src="../assets/logo.png"/>
+                <img class="nav-logo" src="../assets/logo-nb-white.png"/>
             </b-navbar-brand>
             <b-navbar-nav class="ml-auto" v-if="!this.user">
                 <b-nav-item to="/login" right>Login</b-nav-item>
@@ -106,6 +106,11 @@
 </script>
 
 <style scoped>
+
+    .nav-logo {
+        max-height: 60px;
+    }
+
     .bm-burger-bars {
         background-color: #ffffff;
     }

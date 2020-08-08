@@ -74,7 +74,6 @@
 
             },
             launchImg(msg) {
-                console.log('doing this');
                 this.$emit('expandImage',msg)
             }
         }

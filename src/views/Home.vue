@@ -24,7 +24,7 @@
         <b-modal size="lg" ref="imageModal" title="Are you sure you want to use this picture?" @ok="sendMessage" @cancel="cancelImage" centered>
             <v-img max-width="600" max-height="600" class="modal-image" :src="imagePreview"/>
         </b-modal>
-        <b-modal size="lg" hide-footer ref="expandImageModal" :title="expandedUsername" centered>
+        <b-modal header-border-variant="dark" header-bg-variant="dark" header-text-variant="light" body-bg-variant="dark" size="lg" hide-footer ref="expandImageModal" :title="expandedUsername" centered>
             <v-img contain class="modal-image"  :src="expandedUrl"/>
         </b-modal>
     </div>
@@ -64,7 +64,8 @@
                 sources: [],
                 imagePreview: '',
                 expandedUsername: '',
-                expandedUrl: ''
+                expandedUrl: '',
+                messageListener: null
             }
         },
         computed: {
@@ -99,7 +100,7 @@
                 })
             }
 
-            db.collection("Groups").doc('D2LPkAyE8ZEVLl7AYqPg').collection("Messages").orderBy('Time').onSnapshot(function(querySnapshot) {
+            this.messageListener = db.collection("Groups").doc('D2LPkAyE8ZEVLl7AYqPg').collection("Messages").orderBy('Time').onSnapshot(function(querySnapshot) {
                 querySnapshot.docChanges().forEach(function(change) {
                     if (change.type === "added") {
                         context.messages.push(change.doc.data())
@@ -145,11 +146,14 @@
             })
         },
 
+        beforeDestroy() {
+          this.messageListener()
+        },
+
         methods: {
 
             expandImage(msg) {
-                console.log('DOne this ' + msg)
-                this.expandedUsername = msg.Username;
+                this.expandedUsername = "Posted by: " + msg.Username;
                 this.expandedUrl = msg.url
                 this.$refs['expandImageModal'].show()
             },
