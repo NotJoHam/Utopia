@@ -5,7 +5,7 @@ import store from './store'
 
 import {config} from './helpers/firebaseConfig'
 
-import bootstrapVue from 'bootstrap-vue'
+import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
 import {ValidationProvider, extend, ValidationObserver} from 'vee-validate'
 import {required, email} from 'vee-validate/dist/rules'
 import Vuesax from 'vuesax'
@@ -21,7 +21,8 @@ import 'vuetify/dist/vuetify.css'
 
 
 Vue.config.productionTip = false
-Vue.use(bootstrapVue)
+Vue.use(BootstrapVue)
+Vue.use(BootstrapVueIcons)
 Vue.use(Vuesax)
 Vue.use(Vuetify)
 Vue.use(VueProgressiveImage)
@@ -71,5 +72,11 @@ firebase.auth().onAuthStateChanged(function(user) {
       render: h => h(App)
     }).$mount('#app')
   }
+})
+
+export default new Vuetify({
+  icons: {
+    iconfont: 'mdi', // default - only for display purposes
+  },
 })
 

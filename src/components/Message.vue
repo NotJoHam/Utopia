@@ -9,11 +9,13 @@
                             <v-img height="200" :src="msg.url" @load="loaded" @click="launchImg(msg)"/>
 <!--                            <v-progress-circular class="cloakSpinner" indeterminate color="primary"/>-->
                         </div>
+                        <avatar class="avatarCircle" :username="msg.Username"/>
                     </div>
                 </div>
                 <div v-else>
                     <div class="chat-container" ref="chatContainer" >
-                      <div class="speech-bubble" v-bind:style="{ background: msg.Color }"> {{msg.Message}}</div>
+                        <div class="speech-bubble" v-bind:style="{ background: msg.Color }"> {{msg.Message}}</div>
+                        <avatar :username="msg.Username"/>
                     </div>
                 </div>
             </div>
@@ -21,7 +23,8 @@
                 <div class="msg-username-1"> {{msg.Username}}</div>
                 <div v-if="msg.isImage">
                     <div class="chat-container-1" ref="chatContainer">
-                        <div class="chatImage" v-bind:style="{background: msg.Color}">
+                        <avatar class="avatarCircle" :username="msg.Username"/>
+                        <div class="chatImage-1">
                             <v-img height="200" :src="msg.url" @load="loaded" @click="launchImg(msg)"/>
 <!--                            <v-progress-circular class="cloakSpinner" indeterminate color="primary"/>-->
                         </div>
@@ -29,6 +32,7 @@
                 </div>
                 <div v-else>
                     <div class="chat-container-1" ref="chatContainer">
+                        <avatar :username="msg.Username"/>
                         <div class="speech-bubble-1" v-bind:style="{background: msg.Color}"> {{msg.Message}}</div>
                     </div>
                 </div>
@@ -38,9 +42,7 @@
 </template>
 
 <script>
-    import firebase from 'firebase'
-    import store from '../store'
-
+    import Avatar from 'vue-avatar'
 
     export default {
         name: "Message",
@@ -52,9 +54,12 @@
         },
         props: [
             'messages',
-            'user',
-            'sources'
+            'user'
         ],
+        components: {
+            Avatar
+        },
+
         mounted() {
 
         },
@@ -86,9 +91,20 @@
         margin: 0 auto;
     }
 
+    .avatarCircle {
+
+    }
+
     .chatImage {
+        cursor: pointer;
         max-width: 200px;
         padding-right: 10px;
+    }
+
+    .chatImage-1 {
+        cursor: pointer;
+        max-width: 200px;
+        padding-left: 10px;
     }
 
     .msg-username {
@@ -104,11 +120,14 @@
     }
 
     .chat-container {
+        position: relative;
+        padding-right: 5px;
         display: flex;
         justify-content: flex-end;
     }
 
     .chat-container-1 {
+        padding-left: 5px;
         display: flex;
         justify-content: flex-start;
     }
@@ -119,7 +138,7 @@
         background: #00aabb;
         max-width: 400px;
         color: white;
-        margin: 0 10px 10px 10px;
+        margin: 4px 10px 10px 10px;
         overflow-wrap: break-word;
         text-align: left;
         max-height: 600px;
@@ -131,7 +150,7 @@
         border-radius: .4em;
         max-width: 400px;
         color: white;
-        margin: 0 10px 10px 10px;
+        margin: 4px 10px 10px 10px;
         overflow-wrap: break-word;
         text-align: left;
     }

@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     user: null,
     color: '#00aabb',
-    srcIdx: 0
+    srcIdx: 0,
+    username: ''
   },
   mutations: {
     login (state, user) {
@@ -21,6 +22,9 @@ export default new Vuex.Store({
     },
     updateIdx(state) {
       state.srcIdx += 1
+    },
+    setUsername(state, username) {
+      state.username = username
     }
 
   },

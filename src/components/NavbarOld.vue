@@ -21,8 +21,15 @@
                 </b-nav-item>
             </b-navbar-nav>
         </b-navbar>
-        <b-modal ref="colorModal" title="Choose a new bubble color" centered @ok="submitColor">
-            <v-color-picker v-model="color" hide-mode-switch/>
+        <b-modal ref="colorModal" title="Edit Profile" centered @ok="submitColor">
+            <div>{{this.username}}</div>
+            <avatar inline="true" class="avatarIcon" :username="this.username"/>
+            <img class="changeProfilePicture" src="../assets/add.png" ></img>
+            <hr>
+            <h5>Choose a new bubble color</h5>
+            <v-row justify="space-around" align="center">
+                <chrome-picker v-model="color" />
+            </v-row>
         </b-modal>
     </div>
 </template>
@@ -34,11 +41,15 @@
     import store from '../store/index'
 
     import {Push} from 'vue-burger-menu'
+    import Avatar from 'vue-avatar'
+    import {Chrome} from 'vue-color'
 
     export default {
         name: "Navbar",
         components: {
-          Push
+            Push,
+            Avatar,
+            'chrome-picker': Chrome
         },
         data() {
             return {
@@ -57,9 +68,13 @@
             }
         },
         computed: {
-          user() {
-              return store.state.user
-          }
+            user() {
+                return store.state.user
+            },
+            username() {
+                return store.state.username
+            }
+
         },
         // mounted() {
         //     let burgs = document.getElementsByClassName('bm-burger-bars')
@@ -79,9 +94,9 @@
 
             submitColor: function() {
                 let context = this
-                store.commit('setColor', String(this.color))
+                store.commit('setColor', String(this.color.hex))
                 firebase.firestore().collection('Users').doc(store.state.user.uid).update({
-                    BubbleColor: context.color
+                    BubbleColor: context.color.hex
                 })
             },
 
@@ -117,6 +132,18 @@
 
     .navbar {
         height: 50%;
+    }
+
+    .changeProfilePicture {
+        cursor: pointer;
+        position: absolute;
+        top: 33px;
+        left: 55px;
+        z-index: 7;
+    }
+    .avatarIcon {
+        cursor: pointer;
+        z-index: 2;
     }
 
 </style>

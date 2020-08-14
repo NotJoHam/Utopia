@@ -4,7 +4,6 @@
             <div id="msgContainer" class="msgContainer" :style="{ 'max-height': `calc(100% - ${offsetHeight}px`}" >
                 <message :messages="messages" :user="user" :sources="sources" @expandImage="expandImage"/>
             </div>
-
             <div style="display: flex; margin: 10px 0 10px 0;">
                 <v-btn icon @click="launchFilePicker" style="height: 62px;"> <v-icon>mdi-camera</v-icon></v-btn>
                 <input class="file-picker" type="file" ref="imagePicker" accept="image/*" style="display: none" @change="onFileChange($event.target.name, $event.target.files)"/>
@@ -92,6 +91,7 @@
                     context.username = doc.get('Username')
                     context.color = doc.get('BubbleColor')
                     store.commit('setColor', context.color)
+                    store.commit('setUsername', context.username)
                 }
             })
             if (context.$route.params.FirstLogin || context.firstLogin) {
@@ -190,7 +190,7 @@
             },
 
             sendMessage() {
-                if (this.userMsg.trim() != '' | this.image !== null) {
+                if (this.userMsg.trim() !== '' || this.image !== null) {
                     let msg = this.userMsg
                     this.userMsg = ''
                     let context = this
@@ -306,14 +306,6 @@
     .msgInput {
         width: 90%;
         margin-bottom: 5px;
-    }
-
-    .img90 {
-        -webkit-transform:rotate(90deg);
-        -moz-transform: rotate(90deg);
-        -ms-transform: rotate(90deg);
-        -o-transform: rotate(90deg);
-        transform: rotate(90deg);
     }
 
 </style>
