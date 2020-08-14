@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="Utopia" src="../assets/logo-nb.png"/>
+    <img alt="Utopia" src="../assets/logo-nb-dark.png"/>
     <HelloWorld msg="Welcome to Utopia"/>
   </div>
 </template>

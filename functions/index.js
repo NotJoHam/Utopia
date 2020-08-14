@@ -33,6 +33,8 @@ exports.deleteOldestMessage = functions.firestore.document('Groups/{groupId}/Mes
                         console.log(count)
 
                         if (count === 49) {
+
+                            //Set the boolean flag to true
                             db.collection('Groups').doc(context.params.groupId).update({
                                 is50: true
                             }).then(function () {
@@ -40,6 +42,7 @@ exports.deleteOldestMessage = functions.firestore.document('Groups/{groupId}/Mes
                             })
                         }
 
+                        //Increment a random shard
                         const shardId = Math.floor(Math.random() * 7);
                         const shardRef = db.collection('Counters').doc(context.params.groupId).collection('Shards').doc(shardId.toString())
                         shardRef.update({count: FieldValue.increment(1)})
